@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use("/user", userRouter);
 
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     console.log(`listening to the port = 3000`);
     app.listen(3000);
