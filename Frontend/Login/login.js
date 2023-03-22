@@ -15,7 +15,7 @@ async function login(e) {
     console.log(response);
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userDetails", JSON.stringify(response.data.user));
+      localStorage.setItem("userDetails", JSON.stringify(response.data));
       prompt("Enter your name to join");
       window.location.href = "../chat/chat.html";
     } else {

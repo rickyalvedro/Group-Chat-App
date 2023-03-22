@@ -16,7 +16,6 @@
 }
 
 .message {
-  background-color: grey;
   width: 24%;
   padding: 10px;
   margin: 17px 12px;
@@ -25,11 +24,13 @@
 }
 
 .left {
+  background-color: rgb(255, 250, 250);
   float: left;
   clear: both;
 }
 
 .right {
+  background-color: rgb(134, 245, 184);
   float: right;
   clear: both;
 }

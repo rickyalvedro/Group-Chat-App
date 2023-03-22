@@ -40,6 +40,7 @@ exports.signup = async (req, res) => {
           phonenumber,
           password: hash,
         });
+
         res.status(200).json({ success: true, user });
       } catch (err) {
         console.log(err);
