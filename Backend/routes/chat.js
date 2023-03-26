@@ -11,4 +11,10 @@ router.post(
   chatController.sendMessage
 );
 
+router.get(
+  "/getMessage",
+  authentication.authenticate,
+  chatController.getMessage
+);
+
 module.exports = router;

@@ -26,7 +26,7 @@ User.hasMany(Chat);
 Chat.belongsTo(User);
 
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     console.log(`listening to the port = 3000`);
     app.listen(3000);
