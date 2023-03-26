@@ -36,13 +36,24 @@ button.addEventListener("click", async (e) => {
   }
 });
 
-window.addEventListener("DOMContentLoaded", async () => {
+// setInterval(function () {
+//   location.reload();
+// }, 8000);
+
+window.addEventListener("DOMContentLoaded", getDOMPage);
+async function getDOMPage() {
   const response = await axios.get("http://localhost:3000/chat/getMessage", {
     headers: { Authorization: token },
   });
   console.log("Previous messages", response);
+
   response.data.messages.forEach((ele) => {
-    append(ele.message, "right");
+    if (ele.currentUser) {
+      append(ele.message, "right");
+    } else {
+      append(ele.message, "left");
+    }
   });
+
   // console.log(response);
-});
+}
