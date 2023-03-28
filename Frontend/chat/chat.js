@@ -4,6 +4,9 @@ const messageContainer = document.querySelector(".container");
 const token = localStorage.getItem("token");
 const button = document.getElementById("send-btn");
 
+let chatArray = [];
+let lastMessageId;
+
 const append = (message, position) => {
   const messageElement = document.createElement("div");
   messageElement.innerText = message;
@@ -42,12 +45,37 @@ button.addEventListener("click", async (e) => {
 
 window.addEventListener("DOMContentLoaded", getDOMPage);
 async function getDOMPage() {
-  const response = await axios.get("http://localhost:3000/chat/getMessage", {
-    headers: { Authorization: token },
-  });
-  console.log("Previous messages", response);
+  let message = JSON.parse(localStorage.getItem("messages"));
 
-  response.data.messages.forEach((ele) => {
+  if (message === null) {
+    lastMessageId = 0;
+  } else {
+    lastMessageId = message[message.length - 1].id;
+  }
+
+  const response = await axios.get(
+    `http://localhost:3000/chat/getMessage?lastMessageId=${lastMessageId}`,
+    {
+      headers: { Authorization: token },
+    }
+  );
+
+  const backendArray = response.data.messages.map((ele) => ele.message);
+
+  if (message) {
+    chatArray = message.concat(backendArray);
+  } else {
+    chatArray = chatArray.concat(backendArray);
+  }
+
+  chatArray = chatArray.slice(chatArray.length - 10);
+
+  const localStorageMessages = JSON.stringify(chatArray);
+  localStorage.setItem("messages", localStorageMessages);
+  console.log("Previous messages", response);
+  console.log(`messages ==> `, JSON.parse(localStorage.getItem("messages")));
+
+  chatArray.forEach((ele) => {
     if (ele.currentUser) {
       append(ele.message, "right");
     } else {

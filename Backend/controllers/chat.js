@@ -25,8 +25,24 @@ exports.sendMessage = async (req, res) => {
 exports.getMessage = async (req, res, next) => {
   try {
     // const message = await req.user.getChats();
+    const msgId = req.query.lastMessageId;
     const messages = await Chat.findAll({ include: ["user"] });
+    console.log(messages);
     const { email } = req.user;
+
+    let index = 0;
+
+    if (msgId) {
+      messages.forEach((chat) => {
+        if (chat.id === msgId) {
+          index = msgId;
+        }
+      });
+    }
+    console.log("Message Index ==>", msgId);
+    messasges = messages.slice(index);
+
+    console.log("Message length ===>", messages.length);
     const data = messages.map((chat) => {
       let currentUser;
       if (chat.user.email === email) {
@@ -37,8 +53,10 @@ exports.getMessage = async (req, res, next) => {
         name: chat.user.name,
         createdAt: chat.createdAt,
         currentUser: currentUser,
+        id: chat.id,
       };
     });
+    console.log(`data====>`, data);
     return res.status(200).json({ messages: data, success: true });
   } catch (err) {
     console.log(err);
